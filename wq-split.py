@@ -5,9 +5,7 @@ from telegram.ext import (
     Filters
 )
 from dao.UserDAO import UserDAO
-from dto.UserDTO import UserDTO
-import os
-import psycopg2
+from handler.MainHandler import START_HANDLER
 
 def startHandler(update, context):
     users = UserDAO().getUsers()
@@ -33,10 +31,13 @@ def main():
     dp = updater.dispatcher
 
     # Handler for commands
-    dp.add_handler(CommandHandler("start", startHandler))
+    dp.add_handler(START_HANDLER)
+
+    # dp.add_handler(MessageHandler(Filters.command, startHandler))
+    # dp.add_handler(CommandHandler(["some", "commands"], startHandler))
 
     # Handler for messages (non-commands)
-    dp.add_handler(MessageHandler(Filters.text, infoHandler))
+    # dp.add_handler(MessageHandler(Filters.text, infoHandler))
 
     # Start the Bot
     updater.start_polling()
