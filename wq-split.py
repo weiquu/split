@@ -17,7 +17,7 @@ def startHandler(update, context):
         user_records = cursor.fetchall()
         for user in user_records:
             update.message.reply_text("uid = " + str(user[0]))
-            update.message.reply_text("name = " + str(user[1]))
+            update.message.reply_text("username = " + str(user[1]))
     except(Exception, psycopg2.Error) as error:
         print("Error while fetching data from PostgreSQL", error)
     finally:

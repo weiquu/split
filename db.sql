@@ -1,6 +1,56 @@
 drop table if exists Users cascade;
-
+/* contains all registered users */
 create table Users (
-	uid 	integer primary key,
-    name    varchar(50) NOT NULL
+	uid 	    integer primary key,
+    username    varchar(50) NOT NULL
+);
+
+drop table if exists Unregistered cascade;
+/* all users invited to a group but have not yet started the bot */
+/* TODO: see if this is needed */
+create table Unregistered (
+    username    varchar(50) primary key
+);
+
+drop table if exists Groups cascade;
+/* a group is a bunch of people who want to split their costs */
+create table Groups (
+    gid         integer primary key,
+    groupname   varchar(50) NOT NULL,
+    creator     integer references Users(uid) NOT NULL /* on delete cascade? */
+);
+
+drop table if exists Access cascade;
+/* records which user has access to which group */
+/* TODO: add in differing levels of permissions */
+create table Access (
+    uid         integer references Users(uid) NOT NULL, /* on delete cascade? */
+    gid         integer references Groups(gid) NOT NULL, /* on delete cascade? */
+    primary key (uid, gid)
+);
+
+drop table if exists Currencies cascade;
+/* which currencies a transaction can be recorded in */
+create table Currencies (
+    currency    varchar(50) primary key
+);
+insert into Currencies values ('SGD'), ('Euro');
+
+drop table if exists Transactions cascade;
+/* records all transactions */
+create table Transactions (
+    tid         integer primary key,
+    gid         integer references Groups(gid) NOT NULL, /* on delete cascade? */
+    uid         integer references Users(uid) NOT NULL, /* on delete cascade? represents who paid */
+    costs       decimal(12, 2) NOT NULL,
+    currency    varchar(50) NOT NULL references Currencies(currency), /* on delete cascade? */
+    datecreated timestamptz
+);
+
+drop table if exists Splits cascade;
+/* contains who should be splitting payment for a transaction */
+create table Splits (
+    tid         integer references Transactions(tid) NOT NULL,
+    uid         integer references Users(uid) NOT NULL,
+    primary key (tid, uid)
 );
