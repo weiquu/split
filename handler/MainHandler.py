@@ -1,23 +1,25 @@
 from telegram.ext import (
-    Updater,
     CommandHandler,
     ConversationHandler,
     MessageHandler,
     Filters
 )
-from handler.StartHandler import (
-    ONE,
-    TWO,
-    start,
-    firstState,
-    secondState,
+from handler.StartHandler import start
+from handler.CreateGroupHandler import (
+    GETNAME,
+    ADDUSERS,
+    createGroup,
+    getName,
+    addUsers,
     cancel
 )
 
-START_HANDLER = ConversationHandler(entry_points = [CommandHandler('start', start)],
+START_HANDLER = CommandHandler('start', start)
+
+CREATE_GROUP_HANDLER = ConversationHandler(entry_points = [CommandHandler('creategroup', createGroup)],
         states = {
-            ONE : [MessageHandler(Filters.text & (~Filters.regex('cancel')), firstState)],
-            TWO : [MessageHandler(Filters.text & (~Filters.regex('cancel')), secondState)]
+            GETNAME : [MessageHandler(Filters.text & (~Filters.regex('cancel')), getName)],
+            ADDUSERS : [MessageHandler(Filters.text & (~Filters.regex('cancel')), addUsers)]
         },
         fallbacks = [MessageHandler(Filters.regex('cancel'), cancel)],
         allow_reentry = True

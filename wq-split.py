@@ -1,14 +1,12 @@
 from telegram.ext import (
     Updater,
-    CommandHandler,
-    MessageHandler,
-    Filters
+    CommandHandler
 )
 from dao.UserDAO import UserDAO
-from handler.MainHandler import START_HANDLER
+from handler.MainHandler import START_HANDLER, CREATE_GROUP_HANDLER
 
-def startHandler(update, context):
-    users = UserDAO().getUsers()
+def tempHandler(update, context):
+    users = UserDAO().getAllUsers()
     for user in users:
         update.message.reply_text("uid = " + str(user.getUid()))
         update.message.reply_text("username = " + str(user.getUsername()))
@@ -32,6 +30,9 @@ def main():
 
     # Handler for commands
     dp.add_handler(START_HANDLER)
+    dp.add_handler(CREATE_GROUP_HANDLER)
+
+    dp.add_handler(CommandHandler('temp', tempHandler))
 
     # dp.add_handler(MessageHandler(Filters.command, startHandler))
     # dp.add_handler(CommandHandler(["some", "commands"], startHandler))

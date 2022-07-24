@@ -1,7 +1,7 @@
 drop table if exists Users cascade;
 /* contains all registered users */
 create table Users (
-	uid 	    integer primary key,
+	uid 	    integer primary key, /* see if this should be a string or bigint */
     username    varchar(50) NOT NULL
 );
 

@@ -9,19 +9,29 @@ class DBAccessor:
         try:
             DATABASE_URL = os.environ['DATABASE_URL']
             self.__conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-            self.__cursor = self.__conn.cursor()
         except(Exception, psycopg2.Error) as error:
             print("Error while opening DB accessor", error)
 
-    def query(self, query, params):
+    def select(self, query, params):
         try:
+            self.__cursor = self.__conn.cursor()
             self.__cursor.execute(query, params)
         except(Exception, psycopg2.Error) as error:
             print("Error while querying database", error)
         return self.__cursor
 
+    def insert(self, query, params):
+        try:
+            self.__cursor = self.__conn.cursor()
+            self.__cursor.execute(query, params)
+            self.__conn.commit()
+        except(Exception, psycopg2.Error) as error:
+            print("Error while inserting into database", error)
+            return False
+        return True
+
     def close(self):
-        if self.__conn is None:
+        if self.__conn is not None:
             self.__cursor.close()
             self.__conn.close()
             print("PostgreSQL connection is closed")
