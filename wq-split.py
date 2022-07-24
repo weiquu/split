@@ -4,27 +4,16 @@ from telegram.ext import (
     MessageHandler,
     Filters
 )
+from dao.UserDAO import UserDAO
+from dto.UserDTO import UserDTO
 import os
 import psycopg2
 
 def startHandler(update, context):
-    try:
-        DATABASE_URL = os.environ['DATABASE_URL']
-        conn = psycopg2.connect(DATABASE_URL, sslmode='require')
-        cursor = conn.cursor()
-        postgreSQL_select_Query = "select * from users"
-        cursor.execute(postgreSQL_select_Query)
-        user_records = cursor.fetchall()
-        for user in user_records:
-            update.message.reply_text("uid = " + str(user[0]))
-            update.message.reply_text("username = " + str(user[1]))
-    except(Exception, psycopg2.Error) as error:
-        print("Error while fetching data from PostgreSQL", error)
-    finally:
-        if conn:
-            cursor.close()
-            conn.close()
-            print("PostgreSQL connection is closed")
+    users = UserDAO().getUsers()
+    for user in users:
+        update.message.reply_text("uid = " + str(user.getUid()))
+        update.message.reply_text("username = " + str(user.getUsername()))
 
 def infoHandler(update, context):
     chat_id = update.message.chat_id
