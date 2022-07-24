@@ -4,6 +4,7 @@ create table Users (
 	uid 	    integer primary key, /* see if this should be a string or bigint */
     username    varchar(50) NOT NULL
 );
+insert into Users values (1, 'test1'), (2, 'test2'), (262112498, 'weiquu'), (465678629, 'tanyaragu');
 
 drop table if exists Unregistered cascade;
 /* all users invited to a group but have not yet started the bot */
@@ -15,8 +16,8 @@ create table Unregistered (
 drop table if exists Groups cascade;
 /* a group is a bunch of people who want to split their costs */
 create table Groups (
-    gid         integer primary key,
-    groupname   varchar(50) NOT NULL,
+    gid         serial primary key,
+    groupname   varchar(50) NOT NULL, /* unique? */
     creator     integer references Users(uid) NOT NULL /* on delete cascade? */
 );
 

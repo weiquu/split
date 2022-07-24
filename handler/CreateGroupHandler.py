@@ -1,6 +1,8 @@
 from telegram.ext import (
     ConversationHandler
 )
+from dto.GroupDTO import GroupDTO
+from dao.GroupDAO import GroupDAO
 
 GETNAME, ADDUSERS = range(2)
 
@@ -11,6 +13,7 @@ def createGroup(update, context):
 
 def getName(update, context):
     groupName = update.message.text
+    # TODO: check if group name already exists
     update.message.reply_text("Creating a group called " + groupName)
     context.user_data["groupName"] = groupName
     update.message.reply_text("Next, enter a comma-separated list of usernames to be added into your group. Example: username1, username2, username3")
@@ -19,10 +22,10 @@ def getName(update, context):
 
 def addUsers(update, context):
     users = update.message.text
-    # TODO: create the group
-    update.message.reply_text(context.user_data["groupName"])
-    update.message.reply_text(users)
-    update.message.reply_text("Okay! Group created. To enter your group and starting adding transactions, use /enter.")
+    accessNames = list(map(str.strip, users.split(",")))
+    groupToAdd = GroupDTO(None, context.user_data["groupName"], update.message.chat_id, update.message.chat.username, None, accessNames)
+    msg = GroupDAO().addGroup(groupToAdd)
+    update.message.reply_text(msg)
     return ConversationHandler.END
 
 def cancel(update, context):
