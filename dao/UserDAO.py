@@ -24,3 +24,12 @@ class UserDAO:
             return True
         return self.__db.insert("INSERT INTO users (uid, username) VALUES (%s, %s)", 
                 (userToAdd.getUid(), userToAdd.getUsername()))
+
+    def getUserGroups(self, uid):
+        # returns a list of groups that the user has access to
+        result = self.__db.select("SELECT G.groupname FROM Access A NATURAL JOIN Groups G WHERE A.uid = %s", (uid,))
+        if result.rowcount == 0:
+            return []
+        result = result.fetchall()
+        groupList = [group[0] for group in result]
+        return groupList

@@ -16,8 +16,15 @@ class GroupDAO:
             return "Group cannot be created at this time. Please try again later."
         msg += "Okay! Group created. To enter your group and starting adding transactions, use /enter.\n"
 
+        # add owner to access, then below if username = owner just continue
+        success = self.__db.insert("INSERT INTO Access values (%s, %s)", (groupToAdd.getCreatorUid(), gid))
+        if not success:
+            msg += "We are unable to add " + str(groupToAdd.getCreatorName()) + " to the group. Please try again later.\n"
+
         # for each item in accessNames, we want to get their userid and then add them to the access table
         for username in groupToAdd.getAccessNames():
+            if username == groupToAdd.getCreatorName():
+                continue
             uidRow = self.__db.select("SELECT uid FROM Users WHERE username = %s", (username,))
             if uidRow.rowcount == 0:
                 msg += str(username) + " has yet to be registered. Please direct them to this bot and press /start\n"

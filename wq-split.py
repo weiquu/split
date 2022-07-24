@@ -3,7 +3,7 @@ from telegram.ext import (
     CommandHandler
 )
 from dao.UserDAO import UserDAO
-from handler.MainHandler import START_HANDLER, CREATE_GROUP_HANDLER
+from handler.MainHandler import START_HANDLER, CREATE_GROUP_HANDLER, ENTER_HANDLER
 
 def tempHandler(update, context):
     users = UserDAO().getAllUsers()
@@ -31,6 +31,7 @@ def main():
     # Handler for commands
     dp.add_handler(START_HANDLER)
     dp.add_handler(CREATE_GROUP_HANDLER)
+    dp.add_handler(ENTER_HANDLER)
 
     dp.add_handler(CommandHandler('temp', tempHandler))
 
