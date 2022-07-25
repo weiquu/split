@@ -3,6 +3,7 @@ from telegram.ext import (
 )
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from dao.UserDAO import UserDAO
+from dao.GroupDAO import GroupDAO
 
 ENTER_GROUP = range(1)
 
@@ -23,8 +24,10 @@ def getGroupOptions(update, context):
 
 def enterGroup(update, context):
     # set context to group
-    context.user_data["currGroup"] = update.callback_query.data
-    update.callback_query.message.edit_text("You're now in group " + str(update.callback_query.data))
+    context.user_data["currGroupname"] = update.callback_query.data
+    gid = GroupDAO().getGidFromGroupname(update.callback_query.data)
+    context.user_data["currGid"] = gid
+    update.callback_query.message.edit_text("You're now in group " + str(context.user_data["currGroupname"]))
     return ConversationHandler.END
 
 def cancel(update, context):

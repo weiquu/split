@@ -31,27 +31,27 @@ create table Access (
 );
 
 drop table if exists Currencies cascade;
-/* which currencies a transaction can be recorded in */
+/* which currencies an expense can be recorded in */
 create table Currencies (
     currency    varchar(50) primary key
 );
 insert into Currencies values ('SGD'), ('Euro');
 
-drop table if exists Transactions cascade;
-/* records all transactions */
-create table Transactions (
-    tid         integer primary key,
+drop table if exists Expenses cascade;
+/* records all expenses */
+create table Expenses (
+    eid         serial primary key,
     gid         integer references Groups(gid) NOT NULL, /* on delete cascade? */
     uid         integer references Users(uid) NOT NULL, /* on delete cascade? represents who paid */
-    costs       decimal(12, 2) NOT NULL,
+    cost        decimal(12, 2) NOT NULL,
     currency    varchar(50) NOT NULL references Currencies(currency), /* on delete cascade? */
-    datecreated timestamptz
+    datecreated timestamptz DEFAULT NOW()
 );
 
 drop table if exists Splits cascade;
-/* contains who should be splitting payment for a transaction */
+/* contains who should be splitting payment for an expense */
 create table Splits (
-    tid         integer references Transactions(tid) NOT NULL,
+    eid         integer references Expenses(eid) NOT NULL,
     uid         integer references Users(uid) NOT NULL,
-    primary key (tid, uid)
+    primary key (eid, uid)
 );

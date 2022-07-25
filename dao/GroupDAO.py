@@ -38,3 +38,14 @@ class GroupDAO:
                 msg += "Added " + str(username) + " to the group!\n"
         
         return msg
+
+    def getGidFromGroupname(self, groupname):
+        gid = self.__db.select("SELECT gid FROM Groups WHERE groupname = %s", (groupname,))
+        if gid.rowcount == 0:
+            return -1
+        return gid.fetchone()[0]
+
+    def getUsersInGroup(self, gid):
+        result = self.__db.select("SELECT U.username FROM Access A NATURAL JOIN Users U WHERE A.gid = %s", (gid,)).fetchall()
+        groupUsers = [user[0] for user in result]
+        return groupUsers

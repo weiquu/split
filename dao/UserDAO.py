@@ -16,8 +16,12 @@ class UserDAO:
         return users
 
     def isUserRegistered(self, uid):
-        result = self.__db.select("SELECT COUNT(*) FROM users WHERE uid=%s", (uid,)).fetchone()
+        result = self.__db.select("SELECT COUNT(*) FROM users WHERE uid = %s", (uid,)).fetchone()
         return (result[0] == 1)
+
+    def getUserFromUsername(self, username):
+        result = self.__db.select("SELECT uid FROM users WHERE username = %s", (username,)).fetchone()
+        return result[0]
 
     def addUser(self, userToAdd):
         if (self.isUserRegistered(userToAdd.getUid())): # already registered, we are done

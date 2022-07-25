@@ -21,6 +21,16 @@ from handler.EnterHandler import (
     cancel,
     remindKeyboard
 )
+from handler.ExpenseHandler import (
+    GET_COST,
+    GET_CURRENCY,
+    GET_USERS,
+    addNewExpense,
+    getCost,
+    getCurrency,
+    getUsers,
+    cancel
+)
 
 START_HANDLER = CommandHandler('start', start)
 
@@ -43,3 +53,17 @@ ENTER_HANDLER = ConversationHandler(entry_points = [CommandHandler('enter', getG
         ],
         allow_reentry = True
 )
+
+EXPENSE_HANDLER = ConversationHandler(entry_points = [CommandHandler('expense', addNewExpense)],
+        states = {
+            GET_COST : [MessageHandler(Filters.text & (~Filters.regex('cancel')), getCost)],
+            GET_CURRENCY : [CallbackQueryHandler(getCurrency)],
+            GET_USERS : [CallbackQueryHandler(getUsers)]
+        },
+        fallbacks = [
+            MessageHandler(Filters.regex('cancel'), cancel),
+            # MessageHandler(Filters.all, remindKeyboard),
+        ],
+        allow_reentry = True
+)
+

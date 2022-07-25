@@ -31,16 +31,16 @@ class DBAccessor:
         return True
 
     def insertWithReturn(self, query, params):
-        gid = 0
+        id = 0
         try:
             self.__cursor = self.__conn.cursor()
             self.__cursor.execute(query, params)
             self.__conn.commit()
-            gid = self.__cursor.fetchone()[0]
+            id = self.__cursor.fetchone()[0]
         except(Exception, psycopg2.Error) as error:
             print("Error while inserting into database", error)
             #return False
-        return gid
+        return id
 
     def close(self):
         if self.__conn is not None:
