@@ -37,6 +37,9 @@ from handler.AddUserHandler import (
     addUsersToGroup,
     cancel
 )
+from handler.ViewUsersHandler import (
+    viewUsers
+)
 
 START_HANDLER = CommandHandler('start', start)
 
@@ -81,3 +84,5 @@ ADD_USERS_HANDLER = ConversationHandler(entry_points = [CommandHandler('addusers
         ],
         allow_reentry = True
 )
+
+VIEW_USERS_HANDLER = CommandHandler('viewusers', viewUsers)

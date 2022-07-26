@@ -3,7 +3,14 @@ from telegram.ext import (
     CommandHandler
 )
 from dao.UserDAO import UserDAO
-from handler.MainHandler import START_HANDLER, CREATE_GROUP_HANDLER, ENTER_HANDLER, EXPENSE_HANDLER, ADD_USERS_HANDLER
+from handler.MainHandler import (
+    START_HANDLER,
+    CREATE_GROUP_HANDLER,
+    ENTER_HANDLER,
+    EXPENSE_HANDLER,
+    ADD_USERS_HANDLER,
+    VIEW_USERS_HANDLER
+)
 
 def tempHandler(update, context):
     update.message.reply_text(context.user_data["currGid"])
@@ -31,6 +38,7 @@ def main():
     dp.add_handler(ENTER_HANDLER)
     dp.add_handler(EXPENSE_HANDLER)
     dp.add_handler(ADD_USERS_HANDLER)
+    dp.add_handler(VIEW_USERS_HANDLER)
 
     dp.add_handler(CommandHandler('temp', tempHandler))
 
