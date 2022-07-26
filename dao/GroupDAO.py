@@ -1,6 +1,4 @@
-from datetime import datetime
 from db.DBAccessor import DBAccessor
-from dto.GroupDTO import GroupDTO
 from dto.ExpenseDTO import ExpenseDTO
 from decimal import Decimal
 

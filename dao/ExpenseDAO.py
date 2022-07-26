@@ -1,5 +1,4 @@
 from db.DBAccessor import DBAccessor
-from dto.ExpenseDTO import ExpenseDTO
 from dao.UserDAO import UserDAO
 
 class ExpenseDAO:

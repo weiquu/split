@@ -14,13 +14,6 @@ from handler.MainHandler import (
     SPLIT_HANDLER
 )
 
-def tempHandler(update, context):
-    update.message.reply_text(context.user_data["currGid"])
-
-def infoHandler(update, context):
-    chat_id = update.message.chat_id
-    update.message.reply_text(chat_id)
-
 def main():
     # Get bot's token
     token = ""
@@ -34,7 +27,7 @@ def main():
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
-    # Handler for commands
+    # Handlers
     dp.add_handler(START_HANDLER)
     dp.add_handler(CREATE_GROUP_HANDLER)
     dp.add_handler(ENTER_HANDLER)
@@ -43,12 +36,6 @@ def main():
     dp.add_handler(VIEW_USERS_HANDLER)
     dp.add_handler(VIEW_EXPENSES_HANDLER)
     dp.add_handler(SPLIT_HANDLER)
-
-    dp.add_handler(CommandHandler('temp', tempHandler))
-
-    # dp.add_handler(CommandHandler(["some", "commands"], startHandler))
-    # Handler for messages (non-commands)
-    # dp.add_handler(MessageHandler(Filters.text, infoHandler))
 
     # Start the Bot
     updater.start_polling()
