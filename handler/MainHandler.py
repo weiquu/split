@@ -24,10 +24,12 @@ from handler.EnterHandler import (
 from handler.ExpenseHandler import (
     GET_COST,
     GET_CURRENCY,
+    GET_DESC,
     GET_USERS,
     addNewExpense,
     getCost,
     getCurrency,
+    getDesc,
     getUsers,
     cancel
 )
@@ -37,9 +39,8 @@ from handler.AddUserHandler import (
     addUsersToGroup,
     cancel
 )
-from handler.ViewUsersHandler import (
-    viewUsers
-)
+from handler.ViewUsersHandler import viewUsers
+from handler.ViewExpensesHandler import viewExpenses
 
 START_HANDLER = CommandHandler('start', start)
 
@@ -67,6 +68,7 @@ EXPENSE_HANDLER = ConversationHandler(entry_points = [CommandHandler('expense', 
         states = {
             GET_COST : [MessageHandler(Filters.text & (~Filters.regex('cancel')), getCost)],
             GET_CURRENCY : [CallbackQueryHandler(getCurrency)],
+            GET_DESC : [MessageHandler(Filters.text & (~Filters.regex('cancel')), getDesc)],
             GET_USERS : [CallbackQueryHandler(getUsers)]
         },
         fallbacks = [
@@ -86,3 +88,5 @@ ADD_USERS_HANDLER = ConversationHandler(entry_points = [CommandHandler('addusers
 )
 
 VIEW_USERS_HANDLER = CommandHandler('viewusers', viewUsers)
+
+VIEW_EXPENSES_HANDLER = CommandHandler('viewexpenses', viewExpenses)

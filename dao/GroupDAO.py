@@ -1,5 +1,8 @@
+from datetime import datetime
 from db.DBAccessor import DBAccessor
 from dto.GroupDTO import GroupDTO
+from dto.ExpenseDTO import ExpenseDTO
+from decimal import Decimal
 
 class GroupDAO:
     __db = None
@@ -70,3 +73,26 @@ class GroupDAO:
                 msg += "Added " + str(username) + " to the group!\n"
 
         return msg
+
+    def getExpensesInGroup(self, gid):
+        sql = "SELECT E.eid, U.uid, U.username, E.cost, E.currency, E.expDesc, E.hasSplit, E.datecreated "
+        sql += "FROM Expenses E NATURAL JOIN Users U "
+        sql += "WHERE E.gid = %s"
+        expensesRaw = self.__db.select(sql, (gid,)).fetchall()
+        expenses = [self.convertToDTO(expense) for expense in expensesRaw]
+        return expenses
+
+    def convertToDTO(self, expense):
+        eid = int(expense[0])
+        uid = int(expense[1])
+        username = str(expense[2])
+        cost = Decimal(expense[3])
+        currency = str(expense[4])
+        expDesc = str(expense[5])
+        hasSplit = bool(expense[6])
+        dateCreated = expense[7]
+        
+        sql = "SELECT U.username FROM Splits S NATURAL JOIN Users U WHERE S.eid = %s"
+        result = self.__db.select(sql, (eid,)).fetchall()
+        splitUsernames = [user[0] for user in result]
+        return ExpenseDTO(eid, None, uid, username, cost, currency, expDesc, hasSplit, dateCreated, None, splitUsernames)

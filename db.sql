@@ -45,6 +45,8 @@ create table Expenses (
     uid         integer references Users(uid) NOT NULL, /* on delete cascade? represents who paid */
     cost        decimal(12, 2) NOT NULL,
     currency    varchar(50) NOT NULL references Currencies(currency), /* on delete cascade? */
+    expDesc     varchar(50) NOT NULL,
+    hasSplit    boolean NOT NULL DEFAULT false,
     datecreated timestamptz DEFAULT NOW()
 );
 

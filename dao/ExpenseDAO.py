@@ -10,8 +10,8 @@ class ExpenseDAO:
 
     def addExpense(self, expenseToAdd):
         msg = ""
-        eid = self.__db.insertWithReturn("INSERT INTO Expenses (gid, uid, cost, currency) VALUES (%s, %s, %s, %s) RETURNING eid",
-                (expenseToAdd.getGid(), expenseToAdd.getUid(), expenseToAdd.getCost(), expenseToAdd.getCurrency()))
+        eid = self.__db.insertWithReturn("INSERT INTO Expenses (gid, uid, cost, currency, expDesc) VALUES (%s, %s, %s, %s, %s) RETURNING eid",
+                (expenseToAdd.getGid(), expenseToAdd.getUid(), expenseToAdd.getCost(), expenseToAdd.getCurrency(), expenseToAdd.getExpDesc()))
         if not eid:
             return "Expense cannot be created at this time. Please try again later."
         msg += "Okay! Expense created.\n"

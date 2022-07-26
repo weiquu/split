@@ -9,7 +9,8 @@ from handler.MainHandler import (
     ENTER_HANDLER,
     EXPENSE_HANDLER,
     ADD_USERS_HANDLER,
-    VIEW_USERS_HANDLER
+    VIEW_USERS_HANDLER,
+    VIEW_EXPENSES_HANDLER
 )
 
 def tempHandler(update, context):
@@ -39,6 +40,7 @@ def main():
     dp.add_handler(EXPENSE_HANDLER)
     dp.add_handler(ADD_USERS_HANDLER)
     dp.add_handler(VIEW_USERS_HANDLER)
+    dp.add_handler(VIEW_EXPENSES_HANDLER)
 
     dp.add_handler(CommandHandler('temp', tempHandler))
 

@@ -7,7 +7,7 @@ from dao.ExpenseDAO import ExpenseDAO
 from dao.GroupDAO import GroupDAO
 from price_parser import Price
 
-GET_COST, GET_CURRENCY, GET_USERS = range(3)
+GET_COST, GET_CURRENCY, GET_DESC, GET_USERS = range(4)
 currencies = ["SGD", "Euro"]
 EMPTY_CHECKBOX = "☐"
 SELECTED_CHECKBOX = "✔"
@@ -33,10 +33,15 @@ def getCost(update, context):
     cost = update.message.text
     cost = Price.fromstring(cost)
     context.user_data["cost"] = cost.amount
-    update.message.reply_text("Cost is " + str(cost)) #TODO: remove
     reply_markup = getCurrencyKeyboard()
     update.message.reply_text("What currency was it in?", reply_markup=reply_markup)
     return GET_CURRENCY
+
+def getCurrency(update, context):
+    context.user_data["currency"] = update.callback_query.data
+    update.callback_query.message.edit_text("Selected currency " + str(context.user_data["currency"]))
+    update.callback_query.message.reply_text("Enter a short description of the expense.")
+    return GET_DESC
 
 def getUsersKeyboard(gid, splitUsers):
     groupUsers = GroupDAO().getUsersInGroup(gid)
@@ -53,12 +58,11 @@ def getUsersKeyboard(gid, splitUsers):
     reply_markup = InlineKeyboardMarkup(keyboard)
     return reply_markup
 
-def getCurrency(update, context):
-    context.user_data["currency"] = update.callback_query.data
-    update.callback_query.message.edit_text("Selected currency " + str(context.user_data["currency"]))
+def getDesc(update, context):
+    context.user_data["desc"] = update.message.text
     context.user_data["splitUsers"] = []
     reply_markup = getUsersKeyboard(context.user_data["currGid"], context.user_data["splitUsers"])
-    update.callback_query.message.reply_text("Please select users to split between (if you are part of the split, also select yourself)", reply_markup=reply_markup)
+    update.message.reply_text("Please select users to split between (if you are part of the split, also select yourself)", reply_markup=reply_markup)
     return GET_USERS
 
 def getUsers(update, context):
@@ -72,8 +76,9 @@ def getUsers(update, context):
         return GET_USERS
 
     if update.callback_query.data == "done":
+        # TODO: handle case when none selected
         update.callback_query.message.edit_text("Loading......")
-        msg = addExpense(context.user_data["currGid"], update.callback_query.message.chat_id, context.user_data["cost"], context.user_data["currency"], context.user_data["splitUsers"])
+        msg = addExpense(context.user_data["currGid"], update.callback_query.message.chat_id, context.user_data["cost"], context.user_data["currency"], context.user_data["desc"], context.user_data["splitUsers"])
         update.callback_query.message.edit_text(msg)
         return ConversationHandler.END
 
@@ -86,8 +91,8 @@ def getUsers(update, context):
     update.callback_query.message.edit_reply_markup(reply_markup=reply_markup)
     return GET_USERS
 
-def addExpense(gid, uid, cost, currency, splitUsernames):
-    expenseToAdd = ExpenseDTO(None, gid, uid, cost, currency, None, splitUsernames)
+def addExpense(gid, uid, cost, currency, desc, splitUsernames):
+    expenseToAdd = ExpenseDTO(None, gid, uid, None, cost, currency, desc, False, None, None, splitUsernames)
     return ExpenseDAO().addExpense(expenseToAdd)
 
 def cancel(update, context):
