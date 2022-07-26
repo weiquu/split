@@ -41,6 +41,12 @@ from handler.AddUserHandler import (
 )
 from handler.ViewUsersHandler import viewUsers
 from handler.ViewExpensesHandler import viewExpenses
+from handler.SplitHandler import (
+    FINALISE_SPLIT,
+    viewSplit,
+    finaliseSplit,
+    cancelSplit
+)
 
 START_HANDLER = CommandHandler('start', start)
 
@@ -90,3 +96,13 @@ ADD_USERS_HANDLER = ConversationHandler(entry_points = [CommandHandler('addusers
 VIEW_USERS_HANDLER = CommandHandler('viewusers', viewUsers)
 
 VIEW_EXPENSES_HANDLER = CommandHandler('viewexpenses', viewExpenses)
+
+SPLIT_HANDLER = ConversationHandler(entry_points = [CommandHandler('split', viewSplit)],
+        states = {
+            FINALISE_SPLIT : [CallbackQueryHandler(finaliseSplit)]
+        },
+        fallbacks = [
+            MessageHandler(Filters.regex('cancel'), cancelSplit)
+        ],
+        allow_reentry = True
+)

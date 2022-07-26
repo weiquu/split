@@ -96,3 +96,10 @@ class GroupDAO:
         result = self.__db.select(sql, (eid,)).fetchall()
         splitUsernames = [user[0] for user in result]
         return ExpenseDTO(eid, None, uid, username, cost, currency, expDesc, hasSplit, dateCreated, None, splitUsernames)
+
+    def setExpensesToSplit(self, gid):
+        sql = "UPDATE Expenses SET hasSplit = true WHERE gid = %s AND hasSplit = false"
+        success = self.__db.update(sql, (gid,))
+        if not success:
+            return "Failed to process split. Please try again later."
+        return "Your expenses have been split!"

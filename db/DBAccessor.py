@@ -42,6 +42,16 @@ class DBAccessor:
             #return False
         return id
 
+    def update(self, query, params):
+        try:
+            self.__cursor = self.__conn.cursor()
+            self.__cursor.execute(query, params)
+            self.__conn.commit()
+        except(Exception, psycopg2.Error) as error:
+            print("Error while querying database", error)
+            return False
+        return True
+
     def close(self):
         if self.__conn is not None:
             self.__cursor.close()
