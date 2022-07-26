@@ -49,3 +49,24 @@ class GroupDAO:
         result = self.__db.select("SELECT U.username FROM Access A NATURAL JOIN Users U WHERE A.gid = %s", (gid,)).fetchall()
         groupUsers = [user[0] for user in result]
         return groupUsers
+
+    def addUsersToGroup(self, gid, usersList):
+        msg = ""
+        for username in usersList:
+            uidRow = self.__db.select("SELECT uid FROM Users WHERE username = %s", (username,))
+            if uidRow.rowcount == 0:
+                msg += str(username) + " has yet to be registered. Please direct them to this bot and press /start\n"
+                self.__db.insert("INSERT INTO Unregistered values (%s)", (username,))
+                continue
+            uid = uidRow.fetchone()[0]
+            accessRow = self.__db.select("SELECT 1 FROM Access WHERE uid = %s AND gid = %s", (uid, gid))
+            if accessRow.rowcount == 1: # user alr inside
+                msg += str(username) + " is already in the group\n"
+                continue
+            success = self.__db.insert("INSERT INTO Access values (%s, %s)", (uid, gid))
+            if not success:
+                msg += "We are unable to add " + str(username) + " to the group. Please try again later.\n"
+            else:
+                msg += "Added " + str(username) + " to the group!\n"
+
+        return msg

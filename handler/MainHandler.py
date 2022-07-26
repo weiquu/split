@@ -31,6 +31,12 @@ from handler.ExpenseHandler import (
     getUsers,
     cancel
 )
+from handler.AddUserHandler import (
+    ADD_USERS_TO_GROUP,
+    enterUsers,
+    addUsersToGroup,
+    cancel
+)
 
 START_HANDLER = CommandHandler('start', start)
 
@@ -49,7 +55,7 @@ ENTER_HANDLER = ConversationHandler(entry_points = [CommandHandler('enter', getG
         },
         fallbacks = [
             MessageHandler(Filters.regex('cancel'), cancel),
-            MessageHandler(Filters.all, remindKeyboard),
+            MessageHandler(Filters.all, remindKeyboard)
         ],
         allow_reentry = True
 )
@@ -61,9 +67,17 @@ EXPENSE_HANDLER = ConversationHandler(entry_points = [CommandHandler('expense', 
             GET_USERS : [CallbackQueryHandler(getUsers)]
         },
         fallbacks = [
-            MessageHandler(Filters.regex('cancel'), cancel),
-            # MessageHandler(Filters.all, remindKeyboard),
+            MessageHandler(Filters.regex('cancel'), cancel)
         ],
         allow_reentry = True
 )
 
+ADD_USERS_HANDLER = ConversationHandler(entry_points = [CommandHandler('addusers', enterUsers)],
+        states = {
+            ADD_USERS_TO_GROUP : [MessageHandler(Filters.text & (~Filters.regex('cancel')), addUsersToGroup)]
+        },
+        fallbacks = [
+            MessageHandler(Filters.regex('cancel'), cancel)
+        ],
+        allow_reentry = True
+)
