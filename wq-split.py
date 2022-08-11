@@ -17,10 +17,6 @@ import os
 
 def main():
     # Get bot's token
-    # token = ""
-    # with open("token.txt" , "r") as s:
-    #     for line in s:
-    #         token = line.rstrip()
     token = os.environ["WQ_SPLIT_TOKEN"]
 
     # Get bot's port

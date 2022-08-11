@@ -30,7 +30,7 @@ def enterGroup(update, context):
     update.callback_query.message.edit_text("You're now in group " + str(context.user_data["currGroupname"]))
     return ConversationHandler.END
 
-def cancel(update, context):
+def cancelEnter(update, context):
     update.message.reply_text("Aborting entering group.")
     return ConversationHandler.END
 

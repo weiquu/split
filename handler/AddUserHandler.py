@@ -22,6 +22,6 @@ def addUsersToGroup(update, context):
     update.message.reply_text(msg)
     return ConversationHandler.END
 
-def cancel(update, context):
+def cancelAddUser(update, context):
     update.message.reply_text("Stopped adding users.")
     return ConversationHandler.END

@@ -12,13 +12,13 @@ from handler.CreateGroupHandler import (
     createGroup,
     getName,
     addUsers,
-    cancel
+    cancelCreateGroup
 )
 from handler.EnterHandler import (
     ENTER_GROUP,
     getGroupOptions,
     enterGroup,
-    cancel,
+    cancelEnter,
     remindKeyboard
 )
 from handler.ExpenseHandler import (
@@ -31,13 +31,13 @@ from handler.ExpenseHandler import (
     getCurrency,
     getDesc,
     getUsers,
-    cancel
+    cancelExpense
 )
 from handler.AddUserHandler import (
     ADD_USERS_TO_GROUP,
     enterUsers,
     addUsersToGroup,
-    cancel
+    cancelAddUser
 )
 from handler.ViewUsersHandler import viewUsers
 from handler.ViewExpensesHandler import viewExpenses
@@ -55,7 +55,7 @@ CREATE_GROUP_HANDLER = ConversationHandler(entry_points = [CommandHandler('creat
             GETNAME : [MessageHandler(Filters.text & (~Filters.regex('cancel')), getName)],
             ADDUSERS : [MessageHandler(Filters.text & (~Filters.regex('cancel')), addUsers)]
         },
-        fallbacks = [MessageHandler(Filters.regex('cancel'), cancel)],
+        fallbacks = [MessageHandler(Filters.regex('cancel'), cancelCreateGroup)],
         allow_reentry = True
 )
 
@@ -64,7 +64,7 @@ ENTER_HANDLER = ConversationHandler(entry_points = [CommandHandler('enter', getG
             ENTER_GROUP : [CallbackQueryHandler(enterGroup)]
         },
         fallbacks = [
-            MessageHandler(Filters.regex('cancel'), cancel),
+            MessageHandler(Filters.regex('cancel'), cancelEnter),
             MessageHandler(Filters.all, remindKeyboard)
         ],
         allow_reentry = True
@@ -78,7 +78,7 @@ EXPENSE_HANDLER = ConversationHandler(entry_points = [CommandHandler('expense', 
             GET_USERS : [CallbackQueryHandler(getUsers)]
         },
         fallbacks = [
-            MessageHandler(Filters.regex('cancel'), cancel)
+            MessageHandler(Filters.regex('cancel'), cancelExpense)
         ],
         allow_reentry = True
 )
@@ -88,7 +88,7 @@ ADD_USERS_HANDLER = ConversationHandler(entry_points = [CommandHandler('addusers
             ADD_USERS_TO_GROUP : [MessageHandler(Filters.text & (~Filters.regex('cancel')), addUsersToGroup)]
         },
         fallbacks = [
-            MessageHandler(Filters.regex('cancel'), cancel)
+            MessageHandler(Filters.regex('cancel'), cancelAddUser)
         ],
         allow_reentry = True
 )

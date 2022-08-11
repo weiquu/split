@@ -95,6 +95,6 @@ def addExpense(gid, uid, cost, currency, desc, splitUsernames):
     expenseToAdd = ExpenseDTO(None, gid, uid, None, cost, currency, desc, False, None, None, splitUsernames)
     return ExpenseDAO().addExpense(expenseToAdd)
 
-def cancel(update, context):
+def cancelExpense(update, context):
     update.message.reply_text("Aborting creation of expense.")
     return ConversationHandler.END
