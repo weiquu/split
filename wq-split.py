@@ -13,6 +13,7 @@ from handler.MainHandler import (
     VIEW_EXPENSES_HANDLER,
     SPLIT_HANDLER
 )
+import os
 
 def main():
     # Get bot's token
@@ -20,6 +21,9 @@ def main():
     with open("token.txt" , "r") as s:
         for line in s:
             token = line.rstrip()
+
+    # Get bot's port
+    port = int(os.environ.get('PORT', 5000))
 
     # Create the Updater and pass it your bot's token.
     updater = Updater(token, use_context=True)
@@ -38,7 +42,9 @@ def main():
     dp.add_handler(SPLIT_HANDLER)
 
     # Start the Bot
-    updater.start_polling()
+    # updater.start_polling()
+    updater.start_webhook(listen="0.0.0.0", port=int(port), url_path=token)
+    updater.bot.setWebhook('https://wq-split.herokuapp.com/' + token)
 
     updater.idle()
 
