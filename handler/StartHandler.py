@@ -3,9 +3,9 @@ from dao.UserDAO import UserDAO
 
 def start(update, context):
     chat_id = update.message.chat_id
-    update.message.reply_text(chat_id)
+    # update.message.reply_text(chat_id)
     username = update.message.chat.username
-    update.message.reply_text(username)
+    # update.message.reply_text(username)
     userToAdd = UserDTO(chat_id, username)
     success = UserDAO().addUser(userToAdd)
     if (success):
