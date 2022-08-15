@@ -34,7 +34,7 @@ def viewSplit(update, context):
         splitAmount = expense.getCost() / len(splitUsers)
         for user in splitUsers:
             shouldPayAmounts[user] += splitAmount
-            msg += str(user) + " has paid " + paidAmounts[user] + " and should actually be paying " + shouldPayAmounts[user] + "\n"
+            msg += str(user) + " has paid " + str(paidAmounts[user]) + " and should actually be paying " + str(shouldPayAmounts[user]) + "\n"
     update.message.reply_text(msg)
 
     # balance[name] = dict1[name] - dict2[name]
