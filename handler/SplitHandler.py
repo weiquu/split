@@ -11,7 +11,7 @@ def viewSplit(update, context):
         update.message.reply_text("Please enter a group first.")
         return ConversationHandler.END
     # first need to get list of expenseDTOs
-    expenses = GroupDAO().getExpensesInGroup(context.user_data["currGid"])
+    expenses = GroupDAO().getOutstandingExpensesInGroup(context.user_data["currGid"])
     # then get list of usernames, put all in dictionary 3 (paid, should pay, balance)
     users = GroupDAO().getUsersInGroup(context.user_data["currGid"])
     paidAmounts = {}
