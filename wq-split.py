@@ -6,12 +6,13 @@ from dao.UserDAO import UserDAO
 from handler.MainHandler import (
     START_HANDLER,
     CREATE_GROUP_HANDLER,
-    ENTER_HANDLER,
+    ENTER_GROUP_HANDLER,
     EXPENSE_HANDLER,
     ADD_USERS_HANDLER,
     VIEW_USERS_HANDLER,
     VIEW_EXPENSES_HANDLER,
-    SPLIT_HANDLER
+    SPLIT_HANDLER,
+    HELP_HANDLER
 )
 import os
 
@@ -31,12 +32,13 @@ def main():
     # Handlers
     dp.add_handler(START_HANDLER)
     dp.add_handler(CREATE_GROUP_HANDLER)
-    dp.add_handler(ENTER_HANDLER)
+    dp.add_handler(ENTER_GROUP_HANDLER)
     dp.add_handler(EXPENSE_HANDLER)
     dp.add_handler(ADD_USERS_HANDLER)
     dp.add_handler(VIEW_USERS_HANDLER)
     dp.add_handler(VIEW_EXPENSES_HANDLER)
     dp.add_handler(SPLIT_HANDLER)
+    dp.add_handler(HELP_HANDLER)
 
     # Start the Bot
     # updater.start_polling()

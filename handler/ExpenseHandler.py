@@ -18,6 +18,7 @@ def addNewExpense(update, context):
         update.message.reply_text("Please enter a group first.")
         return ConversationHandler.END
     # then, prompt for amount
+    update.message.reply_text("Type 'cancel' at any point to stop.")
     update.message.reply_text("How much did it cost? Please either enter an integer (e.g. 123) or a number to 2 decimal places (e.g. 123.40)")
     return GET_COST
 

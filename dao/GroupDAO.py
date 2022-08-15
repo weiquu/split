@@ -72,10 +72,18 @@ class GroupDAO:
 
         return msg
 
-    def getExpensesInGroup(self, gid):
+    def getAllExpensesInGroup(self, gid):
         sql = "SELECT E.eid, U.uid, U.username, E.cost, E.currency, E.expDesc, E.hasSplit, E.datecreated "
         sql += "FROM Expenses E NATURAL JOIN Users U "
         sql += "WHERE E.gid = %s"
+        expensesRaw = self.__db.select(sql, (gid,)).fetchall()
+        expenses = [self.convertToDTO(expense) for expense in expensesRaw]
+        return expenses
+
+    def getOutstandingExpensesInGroup(self, gid):
+        sql = "SELECT E.eid, U.uid, U.username, E.cost, E.currency, E.expDesc, E.datecreated "
+        sql += "FROM Expenses E NATURAL JOIN Users U "
+        sql += "WHERE E.gid = %s AND NOT E.hasSplit"
         expensesRaw = self.__db.select(sql, (gid,)).fetchall()
         expenses = [self.convertToDTO(expense) for expense in expensesRaw]
         return expenses

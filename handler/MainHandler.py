@@ -14,7 +14,7 @@ from handler.CreateGroupHandler import (
     addUsers,
     cancelCreateGroup
 )
-from handler.EnterHandler import (
+from handler.EnterGroupHandler import (
     ENTER_GROUP,
     getGroupOptions,
     enterGroup,
@@ -40,13 +40,16 @@ from handler.AddUserHandler import (
     cancelAddUser
 )
 from handler.ViewUsersHandler import viewUsers
-from handler.ViewExpensesHandler import viewExpenses
+from handler.ViewExpensesHandler import viewAllExpenses
+from handler.ViewOutstandingHandler import viewOutstandingExpenses
 from handler.SplitHandler import (
     FINALISE_SPLIT,
     viewSplit,
     finaliseSplit,
     cancelSplit
 )
+from handler.HelpHandler import help
+
 
 START_HANDLER = CommandHandler('start', start)
 
@@ -59,7 +62,7 @@ CREATE_GROUP_HANDLER = ConversationHandler(entry_points = [CommandHandler('creat
         allow_reentry = True
 )
 
-ENTER_HANDLER = ConversationHandler(entry_points = [CommandHandler('enter', getGroupOptions)],
+ENTER_GROUP_HANDLER = ConversationHandler(entry_points = [CommandHandler('entergroup', getGroupOptions)],
         states = {
             ENTER_GROUP : [CallbackQueryHandler(enterGroup)]
         },
@@ -95,7 +98,9 @@ ADD_USERS_HANDLER = ConversationHandler(entry_points = [CommandHandler('addusers
 
 VIEW_USERS_HANDLER = CommandHandler('viewusers', viewUsers)
 
-VIEW_EXPENSES_HANDLER = CommandHandler('viewexpenses', viewExpenses)
+VIEW_EXPENSES_HANDLER = CommandHandler('viewall', viewAllExpenses)
+
+VIEW_OUTSTANDING_HANDLER = CommandHandler('outstanding', viewOutstandingExpenses)
 
 SPLIT_HANDLER = ConversationHandler(entry_points = [CommandHandler('split', viewSplit)],
         states = {
@@ -106,3 +111,5 @@ SPLIT_HANDLER = ConversationHandler(entry_points = [CommandHandler('split', view
         ],
         allow_reentry = True
 )
+
+HELP_HANDLER = CommandHandler('help', help)
