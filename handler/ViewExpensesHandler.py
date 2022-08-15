@@ -11,7 +11,6 @@ def viewAllExpenses(update, context):
     msg = "List of all expenses in " + str(context.user_data["currGroupname"]) + ":\n\n"
     i = 1
     for expense in expenses:
-        update.message.reply_text(i)
         splitStatus = ""
         if expense.getHasSplit():
             splitStatus = "has been split."
@@ -23,4 +22,8 @@ def viewAllExpenses(update, context):
         # TODO: format datetime
         msg += "Created at " + str(expense.getDateCreated()) + " and " + splitStatus + "\n\n"
         i += 1
-    update.message.reply_text(msg)
+        if (i % 10 == 1):
+            update.message.reply_text(msg)
+            msg = "List of all expenses in " + str(context.user_data["currGroupname"]) + " (cont):\n\n"
+    if (i % 10 != 1):
+        update.message.reply_text(msg)
