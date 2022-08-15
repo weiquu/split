@@ -3,6 +3,7 @@ import util.Utilities
 
 def viewAllExpenses(update, context):
     # first need to check if in the group using context
+    update.message.reply_text('test')
     if (not "currGid" in context.user_data) or context.user_data["currGid"] <= 0:
         update.message.reply_text("Please enter a group first.")
         return
