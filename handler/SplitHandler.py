@@ -23,7 +23,6 @@ def viewSplit(update, context):
         balanceAmounts[user] = 0
     
     # for each expense:
-    msg = ""
     for expense in expenses:
         if expense.getHasSplit():
             continue
@@ -34,7 +33,10 @@ def viewSplit(update, context):
         splitAmount = expense.getCost() / len(splitUsers)
         for user in splitUsers:
             shouldPayAmounts[user] += splitAmount
-            msg += str(user) + " has paid " + str(paidAmounts[user]) + " and should actually be paying " + str(shouldPayAmounts[user]) + "\n"
+
+    msg = ""
+    for user in users:
+        msg += str(user) + " has paid " + str(paidAmounts[user]) + " and should actually be paying " + str(shouldPayAmounts[user]) + "\n"
     update.message.reply_text(msg)
 
     # balance[name] = dict1[name] - dict2[name]
