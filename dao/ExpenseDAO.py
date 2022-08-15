@@ -1,5 +1,6 @@
 from db.DBAccessor import DBAccessor
 from dao.UserDAO import UserDAO
+import util.Utilities
 
 class ExpenseDAO:
     __db = None
@@ -27,8 +28,7 @@ class ExpenseDAO:
                 break
 
         if success:
-            # TODO: list out selected users
-            msg += "Split between selected users."
+            msg += "Split between " + util.Utilities.formatUsernamesFromArray(expenseToAdd.getSplitUsernames())
         else:
             msg += "Unable to create split at this time."
 

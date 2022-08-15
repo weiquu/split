@@ -77,7 +77,6 @@ def getUsers(update, context):
         return GET_USERS
 
     if update.callback_query.data == "done":
-        # TODO: handle case when none selected
         if len(context.user_data["splitUsers"]) == 0:
             update.callback_query.message.reply_text('Please select at least 1 user.')
             reply_markup = getUsersKeyboard(context.user_data["currGid"], context.user_data["splitUsers"])
