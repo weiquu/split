@@ -78,6 +78,11 @@ def getUsers(update, context):
 
     if update.callback_query.data == "done":
         # TODO: handle case when none selected
+        if len(context.user_data["splitUsers"]) == 0:
+            update.callback_query.message.reply_text('Please select at least 1 user.')
+            reply_markup = getUsersKeyboard(context.user_data["currGid"], context.user_data["splitUsers"])
+            update.callback_query.message.edit_reply_markup(reply_markup=reply_markup)
+            return GET_USERS
         update.callback_query.message.edit_text("Loading......")
         msg = addExpense(context.user_data["currGid"], update.callback_query.message.chat_id, context.user_data["cost"], context.user_data["currency"], context.user_data["desc"], context.user_data["splitUsers"])
         update.callback_query.message.edit_text(msg)
