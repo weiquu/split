@@ -17,7 +17,6 @@ def viewAllExpenses(update, context):
         else:
             splitStatus = "has not been split."
         msg += str(i) + ": " + str(expense.getCost()) + " (" + str(expense.getCurrency()) + ") for " + str(expense.getExpDesc()) + "\n"
-        # TODO: format usernames (done)
         msg += "Paid by " + str(expense.getUsername()) + " and split between " + str(util.Utilities.formatUsernamesFromArray(expense.getSplitUsernames())) + " \n"
         # TODO: format datetime
         msg += "Created at " + str(expense.getDateCreated()) + " and " + splitStatus + "\n\n"

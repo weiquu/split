@@ -13,8 +13,7 @@ def viewOutstandingExpenses(update, context):
     for expense in expenses:
         splitStatus = ""
         msg += str(i) + ": " + str(expense.getCost()) + " (" + str(expense.getCurrency()) + ") for " + str(expense.getExpDesc()) + "\n"
-        # TODO: format usernames
-        msg += "Paid by " + str(expense.getUsername()) + " and split between " + util.Utilities.formatUsernamesFromArray(expense.getSplitUsernames()) + " \n"
+        msg += "Paid by " + str(expense.getUsername()) + " and split between " + str(util.Utilities.formatUsernamesFromArray(expense.getSplitUsernames())) + " \n"
         # TODO: format datetime
         msg += "Created at " + str(expense.getDateCreated()) + "\n\n"
         i += 1
