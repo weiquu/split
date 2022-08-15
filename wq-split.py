@@ -9,6 +9,7 @@ from handler.MainHandler import (
     ENTER_GROUP_HANDLER,
     EXPENSE_HANDLER,
     ADD_USERS_HANDLER,
+    VIEW_OUTSTANDING_HANDLER,
     VIEW_USERS_HANDLER,
     VIEW_EXPENSES_HANDLER,
     SPLIT_HANDLER,
@@ -37,6 +38,7 @@ def main():
     dp.add_handler(ADD_USERS_HANDLER)
     dp.add_handler(VIEW_USERS_HANDLER)
     dp.add_handler(VIEW_EXPENSES_HANDLER)
+    dp.add_handler(VIEW_OUTSTANDING_HANDLER)
     dp.add_handler(SPLIT_HANDLER)
     dp.add_handler(HELP_HANDLER)
 
