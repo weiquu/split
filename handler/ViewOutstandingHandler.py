@@ -14,7 +14,7 @@ def viewOutstandingExpenses(update, context):
         msg += str(i) + ": " + str(expense.getCost()) + " (" + str(expense.getCurrency()) + ") for " + str(expense.getExpDesc()) + "\n"
         msg += "Paid by " + str(expense.getUsername()) + " and split between " + str(util.Utilities.formatUsernamesFromArray(expense.getSplitUsernames())) + " \n"
         # TODO: format datetime
-        msg += "Created at " + str(expense.getDateCreated()) + "\n\n"
+        msg += "Created at " + expense.getDateCreated().strftime("%m/%d/%Y, %H:%M:%S") + "\n\n"
         i += 1
         if (i % 10 == 1):
             update.message.reply_text(msg)
