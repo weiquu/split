@@ -11,7 +11,6 @@ def viewOutstandingExpenses(update, context):
     msg = "List of outstanding expenses in " + str(context.user_data["currGroupname"]) + ":\n\n"
     i = 1
     for expense in expenses:
-        update.message.reply_text(i)
         msg += str(i) + ": " + str(expense.getCost()) + " (" + str(expense.getCurrency()) + ") for " + str(expense.getExpDesc()) + "\n"
         msg += "Paid by " + str(expense.getUsername()) + " and split between " + str(util.Utilities.formatUsernamesFromArray(expense.getSplitUsernames())) + " \n"
         # TODO: format datetime
